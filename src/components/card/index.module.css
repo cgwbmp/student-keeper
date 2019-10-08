@@ -1,9 +1,11 @@
 .card {
   display: block;
-  margin: 0.5em 0;
+  margin: 0.5em;
   padding: 1em;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
+  animation-duration: 0.4s;
+  animation-name: in;
 }
 
 .card__title {
@@ -32,4 +34,13 @@
 .card__sep {
   margin: 0 0.5em;
   font-size: 0.8em;
+}
+
+@keyframes in {
+  from {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  to {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
