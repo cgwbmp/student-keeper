@@ -1,178 +1,93 @@
 import React, { useState, useCallback } from 'react';
+import Layout from './components/layout';
+import Form from './components/form';
+import Card from './components/card';
+import { Student, Triggers } from './types';
 import './app.css';
 
-enum score {
-  Poor = 1,
-  Fair,
-  Good,
-  VeryGood,
-  Excellent,
-}
-
-interface Student {
-  id: string,
-  fullName: string,
-  birthday: string,
-  academicPerformance?: score
-}
-
-const demo = [
-  {
-    id: '123',
-    fullName: 'Name',
-    birthday: '2000-01-01',
-    academicPerformance: score.Good,
-  },
-];
-
-type EnumType = { [s: number]: string };
-
-function mapEnum(enumerable: EnumType, cb: Function): Array<any> {
-  const keys: Array<string> = Object.keys(enumerable)
-    .filter(key => typeof enumerable[key as any] === 'number');
-  return keys.map(key => cb(enumerable[key as any], key));
-}
-
 const App: React.FC = () => {
-  const [students, setStudents] = useState<Array<Student>>(demo);
+  const [students, setStudents] = useState<Array<Student>>([]);
+
+  const [editingStudents, setEditingStudents] = useState<Triggers>({});
 
   const [formVisibility, setFormVisibility] = useState<boolean>(false);
-
-  const [form, setForm] = useState<object>({});
 
   const onClickAdd = useCallback(() => {
     setFormVisibility(true);
   }, []);
 
-  const onClickCancel = useCallback(() => {
+  const onCreate = useCallback((student: Student) => {
+    setStudents([...students, student]);
+    setFormVisibility(false);
+  }, [students]);
+
+  const onCancel = useCallback(() => {
     setFormVisibility(false);
   }, []);
 
-  const onSubmit = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
-    const newStudent = {
-      id: Math.random().toString(),
-      fullName: (form as Student).fullName,
-      birthday: (form as Student).birthday,
-      academicPerformance: (form as Student).academicPerformance,
-    };
-    setStudents([...students, newStudent]);
-    setFormVisibility(false);
-    setForm({});
-  }, [students, form]);
-
-  const onChange = useCallback((event: React.FormEvent): void => {
-    const target = event.target as HTMLInputElement;
-    setForm({
-      ...form,
-      [target.name]: target.value,
+  const onEdit = useCallback((studentId: string) => {
+    setEditingStudents({
+      ...editingStudents,
+      [studentId]: true,
     });
-  }, [form]);
+  }, [editingStudents]);
+
+  const onCancelEdit = useCallback((studentId?: string) => {
+    if (studentId) {
+      setEditingStudents({
+        ...editingStudents,
+        [studentId]: false,
+      });
+    }
+  }, [editingStudents]);
+
+  const onSave = useCallback((changedStudent: Student) => {
+    setStudents(
+      students.map(student => (
+        (student.id === changedStudent.id) ? changedStudent : student
+      )),
+    );
+    setEditingStudents({
+      ...editingStudents,
+      [changedStudent.id]: false,
+    });
+  }, [students, editingStudents]);
+
+  const onDelete = useCallback((studentId: string) => {
+    setStudents(students.filter(({ id }) => id !== studentId));
+  }, [students]);
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>
-          Students
-        </h1>
-      </header>
-      <section className="app-body">
-        {students.map(student => (
-          <div className="card" key={student.id}>
-            <h4 className="card__title">
-              {student.fullName}
-              {(student.academicPerformance) ? (
-                <span className="card__score">
-                  {`★ ${student.academicPerformance}`}
-                </span>
-              ) : null}
-            </h4>
-            <p className="card__info">
-              {student.birthday}
-            </p>
-          </div>
-        ))}
-      </section>
-      <footer className="app-footer">
-        <button
-          type="button"
-          onClick={onClickAdd}
-        >
-          Add student
-        </button>
-      </footer>
+    <Layout
+      onClickAdd={onClickAdd}
+    >
+      {students.map(student => (
+        (editingStudents[student.id]) ? (
+          <Form
+            key={student.id}
+            data={student}
+            onSave={onSave}
+            onCancel={onCancelEdit}
+          />
+        ) : (
+          <Card
+            key={student.id}
+            id={student.id}
+            fullName={student.fullName}
+            birthday={student.birthday}
+            academicPerformance={student.academicPerformance}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        )
+      ))}
       {(formVisibility) ? (
-        <form
-          className="form"
-          name="student"
-          onSubmit={onSubmit}
-        >
-          <label
-            className="form__field"
-            htmlFor="student-fullName"
-          >
-            <span className="form__field-label">
-              Full Name
-            </span>
-            <input
-              className="form__field-input"
-              id="student-fullName"
-              name="fullName"
-              onChange={onChange}
-            />
-          </label>
-          <label
-            className="form__field"
-            htmlFor="student-name"
-          >
-            <span className="form__field-label">
-              Birthday
-            </span>
-            <input
-              className="form__field-input"
-              id="student-birthday"
-              name="birthday"
-              type="date"
-              onChange={onChange}
-            />
-          </label>
-          <fieldset className="form__field">
-            <span className="form__field-label">
-              Academic Performance
-            </span>
-            {mapEnum(score, (value: string, key: number) => (
-              <label
-                className="form__field-radio"
-                htmlFor={`student-academicPerformance-${key}`}
-                key={key}
-              >
-                <input
-                  className="form__field-radio-input"
-                  id={`student-academicPerformance-${key}`}
-                  name="academicPerformance"
-                  value={value}
-                  type="radio"
-                  onChange={onChange}
-                />
-                {key}
-              </label>
-            ))}
-          </fieldset>
-          <footer className="form__footer">
-            <button className="form__button" type="submit">
-              Add
-            </button>
-            <button
-              className="form__button form__button--secondary"
-              type="button"
-              onClick={onClickCancel}
-            >
-              Cancel
-            </button>
-          </footer>
-        </form>
+        <Form
+          onCreate={onCreate}
+          onCancel={onCancel}
+        />
       ) : null}
-    </div>
+    </Layout>
   );
 };
 

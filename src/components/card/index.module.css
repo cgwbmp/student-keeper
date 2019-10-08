@@ -1,0 +1,35 @@
+.card {
+  display: block;
+  margin: 0.5em 0;
+  padding: 1em;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1em;
+}
+
+.card__info {
+  margin: 0;
+  font-size: 0.6em;
+}
+
+.card__score {
+  margin-left: 0.5em;
+}
+
+.card__button {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+.card__sep {
+  margin: 0 0.5em;
+  font-size: 0.8em;
+}
