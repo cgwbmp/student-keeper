@@ -1,12 +1,19 @@
 import React, { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from './components/layout';
 import Form from './components/form';
 import Card from './components/card';
+import {
+  selectors as studentsSelectors,
+  actions as studentsActions,
+} from './store/students';
 import { Student, Triggers } from './types';
 import './app.css';
 
 const App: React.FC = () => {
-  const [students, setStudents] = useState<Array<Student>>([]);
+  const students = useSelector<{}, Array<Student>>(studentsSelectors.get);
+
+  const dispatch = useDispatch();
 
   const [editingStudents, setEditingStudents] = useState<Triggers>({});
 
@@ -17,9 +24,9 @@ const App: React.FC = () => {
   }, []);
 
   const onCreate = useCallback((student: Student) => {
-    setStudents([...students, student]);
     setFormVisibility(false);
-  }, [students]);
+    dispatch(studentsActions.add(student));
+  }, [dispatch]);
 
   const onCancel = useCallback(() => {
     setFormVisibility(false);
@@ -42,20 +49,16 @@ const App: React.FC = () => {
   }, [editingStudents]);
 
   const onSave = useCallback((changedStudent: Student) => {
-    setStudents(
-      students.map(student => (
-        (student.id === changedStudent.id) ? changedStudent : student
-      )),
-    );
     setEditingStudents({
       ...editingStudents,
       [changedStudent.id]: false,
     });
-  }, [students, editingStudents]);
+    dispatch(studentsActions.save(changedStudent));
+  }, [editingStudents, dispatch]);
 
   const onDelete = useCallback((studentId: string) => {
-    setStudents(students.filter(({ id }) => id !== studentId));
-  }, [students]);
+    dispatch(studentsActions.remove(studentId));
+  }, [dispatch]);
 
   return (
     <Layout
