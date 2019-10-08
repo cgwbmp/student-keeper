@@ -1,13 +1,5 @@
+import { ReduxSetter } from '../types';
 import { Student } from '../../types';
-
-interface ReduxAction<P> {
-  type: string,
-  payload: P,
-}
-
-interface ReduxSetter<S, P> {
-  (state: S, action: ReduxAction<P>): S
-}
 
 const add: ReduxSetter<Array<Student>, Student> = (state, action) => [
   ...state,
