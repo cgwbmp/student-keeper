@@ -4,36 +4,31 @@ import Layout from './components/layout';
 import Form from './components/form';
 import EditableCard from './containers/editable-card';
 import {
-  selectors as studentsSelectors,
-  actions as studentsActions,
-} from './store/students';
-import {
-  selectors as uiSelectors,
-  actions as uiActions,
-} from './store/ui';
+  selectors,
+  actions,
+} from './store/journal';
 import { Student } from './types';
 import './app.css';
 
 const App: React.FC = () => {
-  const students = useSelector<{}, Array<Student>>(studentsSelectors.get);
+  const students = useSelector<any, Array<Student>>(selectors.getStudents);
 
-  const isVisibleFormForNewStudent = useSelector<{}, boolean>(
-    uiSelectors.isVisibleFormForNewStudent,
+  const isVisibleFormForNewStudent = useSelector<any, boolean>(
+    selectors.isVisibleFormForNewStudent,
   );
 
   const dispatch = useDispatch();
 
   const onClickAdd = useCallback(() => {
-    dispatch(uiActions.startAddNewStudent());
+    dispatch(actions.create());
   }, [dispatch]);
 
   const onCreate = useCallback((student: Student) => {
-    dispatch(uiActions.endAddNewStudent());
-    dispatch(studentsActions.add(student));
+    dispatch(actions.confirmCreating(student));
   }, [dispatch]);
 
   const onCancel = useCallback(() => {
-    dispatch(uiActions.endAddNewStudent());
+    dispatch(actions.cancelCreating());
   }, [dispatch]);
 
   return (

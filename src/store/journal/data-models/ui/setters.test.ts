@@ -6,12 +6,10 @@ import {
 } from './setters';
 import defaultState, { State } from './state';
 
-const type = 'TYPE';
-
 describe('startEditStudent()', () => {
   const state: State = defaultState;
-  const payload: string = '1';
-  const result = startEditStudent(state, { type, payload });
+  const id: string = '1';
+  const result = startEditStudent(state, id);
   it('sets trigger to true for form visibility by student id', () => {
     expect(result.showEditFormForStudents['1']).toBeTruthy();
   });
@@ -22,8 +20,8 @@ describe('endEditStudent()', () => {
     ...defaultState,
     showEditFormForStudents: { 1: true },
   };
-  const payload: string = '1';
-  const result = endEditStudent(state, { type, payload });
+  const id: string = '1';
+  const result = endEditStudent(state, id);
   it('sets trigger to false for form visibility by student id', () => {
     expect(result.showEditFormForStudents['1']).toBeFalsy();
   });
@@ -31,7 +29,7 @@ describe('endEditStudent()', () => {
 
 describe('startAddNewStudent()', () => {
   const state: State = defaultState;
-  const result = startAddNewStudent(state, { type, payload: undefined });
+  const result = startAddNewStudent(state);
   it('sets trigger to true for form visibility for new student', () => {
     expect(result.showFormForNewStudent).toBeTruthy();
   });
@@ -42,7 +40,7 @@ describe('endAddNewStudent()', () => {
     ...defaultState,
     showFormForNewStudent: true,
   };
-  const result = endAddNewStudent(state, { type, payload: undefined });
+  const result = endAddNewStudent(state);
   it('sets trigger to false for form visibility for new student', () => {
     expect(result.showFormForNewStudent).toBeFalsy();
   });

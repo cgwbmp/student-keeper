@@ -1,24 +1,24 @@
 import { configureStore } from 'redux-starter-kit';
-import studentsReducer, { slice as studentsSlice } from './students';
-import uiReducer, { slice as uiSlice } from './ui';
+import journal, {
+  initialState,
+  selectors,
+} from './journal';
 import { getStudents, setStudents } from '../locale-storage/students';
 
 const students = getStudents() || [];
 
 const store = configureStore({
-  reducer: {
-    [studentsSlice]: studentsReducer,
-    [uiSlice]: uiReducer,
-  },
+  reducer: journal,
   preloadedState: {
-    [studentsSlice]: students,
+    ...initialState,
+    students,
   },
 });
 
 let currentStudents: typeof students;
 store.subscribe(() => {
   const previousStudents = currentStudents;
-  currentStudents = store.getState()[studentsSlice];
+  currentStudents = selectors.getStudents(store.getState());
   if (currentStudents !== previousStudents) {
     setStudents(currentStudents);
   }

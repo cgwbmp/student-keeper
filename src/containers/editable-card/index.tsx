@@ -3,12 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Card from '../../components/card';
 import Form from '../../components/form';
 import {
-  actions as studentsActions,
-} from '../../store/students';
-import {
-  selectors as uiSelectors,
-  actions as uiActions,
-} from '../../store/ui';
+  selectors,
+  actions,
+} from '../../store/journal';
 import { Student } from '../../types';
 
 interface EditableCardProps extends Student {
@@ -22,29 +19,28 @@ const EditableCard: React.FC<EditableCardProps> = (props: EditableCardProps) => 
     academicPerformance,
   } = props;
 
-  const isVisibleForm = useSelector<{}, boolean>(
-    state => uiSelectors.isVisibleEditFormStudent(state, id),
+  const isVisibleForm = useSelector<any, boolean>(
+    state => selectors.isVisibleEditFormStudent(state, id),
   );
 
   const dispatch = useDispatch();
 
   const onEdit = useCallback((studentId: string) => {
-    dispatch(uiActions.startEditStudent(studentId));
+    dispatch(actions.edit(studentId));
   }, [dispatch]);
 
   const onCancel = useCallback((studentId?: string) => {
     if (studentId) {
-      dispatch(uiActions.endEditStudent(studentId));
+      dispatch(actions.cancelEditing(studentId));
     }
   }, [dispatch]);
 
   const onSave = useCallback((changedStudent: Student) => {
-    dispatch(uiActions.endEditStudent(changedStudent.id));
-    dispatch(studentsActions.save(changedStudent));
+    dispatch(actions.confirmEditing(changedStudent));
   }, [dispatch]);
 
   const onDelete = useCallback((studentId: string) => {
-    dispatch(studentsActions.remove(studentId));
+    dispatch(actions.remove(studentId));
   }, [dispatch]);
 
   return (

@@ -1,10 +1,10 @@
 import {
   get,
 } from './getters';
-import { Student } from '../../types';
+import { State } from './state';
 
 describe('get()', () => {
-  const state: Array<Student> = [
+  const state: State = [
     {
       id: '1',
       fullName: 'Name',
