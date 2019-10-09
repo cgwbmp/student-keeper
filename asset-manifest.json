@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/student-keeper/static/css/main.0f587efd.chunk.css",
-    "main.js": "/student-keeper/static/js/main.462cd5e2.chunk.js",
-    "main.js.map": "/student-keeper/static/js/main.462cd5e2.chunk.js.map",
+    "main.js": "/student-keeper/static/js/main.23abb566.chunk.js",
+    "main.js.map": "/student-keeper/static/js/main.23abb566.chunk.js.map",
     "runtime-main.js": "/student-keeper/static/js/runtime-main.cc12ce63.js",
     "runtime-main.js.map": "/student-keeper/static/js/runtime-main.cc12ce63.js.map",
-    "static/js/2.427788c2.chunk.js": "/student-keeper/static/js/2.427788c2.chunk.js",
-    "static/js/2.427788c2.chunk.js.map": "/student-keeper/static/js/2.427788c2.chunk.js.map",
+    "static/js/2.dbfc9380.chunk.js": "/student-keeper/static/js/2.dbfc9380.chunk.js",
+    "static/js/2.dbfc9380.chunk.js.map": "/student-keeper/static/js/2.dbfc9380.chunk.js.map",
     "index.html": "/student-keeper/index.html",
-    "precache-manifest.21f18961c6c57851b0716d0599d9cf64.js": "/student-keeper/precache-manifest.21f18961c6c57851b0716d0599d9cf64.js",
+    "precache-manifest.b4caabe8b3e16f65f849e48269c97c72.js": "/student-keeper/precache-manifest.b4caabe8b3e16f65f849e48269c97c72.js",
     "service-worker.js": "/student-keeper/service-worker.js",
     "static/css/main.0f587efd.chunk.css.map": "/student-keeper/static/css/main.0f587efd.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.cc12ce63.js",
-    "static/js/2.427788c2.chunk.js",
+    "static/js/2.dbfc9380.chunk.js",
     "static/css/main.0f587efd.chunk.css",
-    "static/js/main.462cd5e2.chunk.js"
+    "static/js/main.23abb566.chunk.js"
   ]
 }
